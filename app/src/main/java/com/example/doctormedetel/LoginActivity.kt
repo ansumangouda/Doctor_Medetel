@@ -9,8 +9,6 @@ import android.view.View.OnClickListener
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.widget.addTextChangedListener
 
 
 class LoginActivity : AppCompatActivity() {
@@ -24,7 +22,7 @@ class LoginActivity : AppCompatActivity() {
         bindViews()
         ansu(this)
         val loginListener  =  Listener(this)
-        loginbtn.setOnClickListener(loginListener)
+      //  loginbtn.setOnClickListener(loginListener)
 
         val loginTextWatcher = LoginTextWatcher(etuserNameet,passwordet,loginbtn,this )
         etuserNameet.addTextChangedListener(loginTextWatcher)
@@ -60,7 +58,8 @@ class LoginTextWatcher (private val userName : EditText , private val passwordEt
                 it.hashCode() == userName.text.hashCode() -> {
                     val userName = it.toString()
                     if (userName.isEmpty()) {
-                     Toast.makeText(activity,"how",Toast.LENGTH_SHORT).show()
+
+                   //  Toast.makeText(activity,"how",Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -69,22 +68,29 @@ class LoginTextWatcher (private val userName : EditText , private val passwordEt
 
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        s?.let {
-            when{
-                it.hashCode() == userName.text.hashCode()->{
-                    val userName = it.toString()
-                    if (userName.isEmpty()){
-                        Toast.makeText(activity,"text change",Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
+      val usernameText = s.toString()
+        if (usernameText.length < 10){
+            userName.error = "error"
+            Toast.makeText(activity,"textChange",Toast.LENGTH_SHORT).show()
+            notAccess(loginbtn)
+        }else{
+            access(loginbtn)
         }
+
 
     }
 
     override fun afterTextChanged(s: Editable?) {
     }
 
+}
+fun notAccess(loginBtn: TextView) {
+    loginBtn.isEnabled = false
+    loginBtn.error = "null"
+}
+fun access(loginbtn: TextView) {
+    loginbtn.isEnabled = true
+    loginbtn.error = null
 }
 
 
