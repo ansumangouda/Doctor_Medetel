@@ -1,16 +1,12 @@
 package com.example.doctormedetel.viewModel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+
 import androidx.lifecycle.ViewModel
-import com.example.doctormedetel.ResponceClass.LoginResponce
-import com.example.doctormedetel.RetrofitNetwork.Retroit
+import com.example.doctormedetel.repository.LoginRepository
 
-class UserViewModel : ViewModel() {
-    private  val  userRepository = Retroit()
-    private val loginData = MutableLiveData<List<LongProgression>>()
-    val users: MutableLiveData<List<LongProgression>> get() = loginData
-    fun fetchUser(){
 
+class UserViewModel(private val repository: LoginRepository) : ViewModel() {
+    fun accessRepo(){
+        repository.getUserDetails()
     }
 }

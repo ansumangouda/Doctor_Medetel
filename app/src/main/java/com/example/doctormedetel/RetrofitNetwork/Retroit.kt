@@ -1,18 +1,27 @@
 package com.example.doctormedetel.RetrofitNetwork
 
 import com.example.doctormedetel.ApiService.ApiService
-import com.example.doctormedetel.ResponceClass.LoginResponce
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-open class Retroit {
-    val retroit = Retrofit.Builder()
+object Retroit {
+    private val httpClient = HttpLoggingInterceptor()
+
+    private val okHttpClient = OkHttpClient.Builder()
+        .addInterceptor(httpClient)
+        .build();
+    private val retroitClient = Retrofit.Builder()
                  .baseUrl("https://telemedicinepvtapi.esdinfra.com")
                  .addConverterFactory(GsonConverterFactory.create())
+                 .client(okHttpClient)
                  .build()
 
-    val apiService = retroit.create(ApiService::class.java)
+
+    val apiService: ApiService = retroitClient.create(ApiService::class.java)
 
 }
 

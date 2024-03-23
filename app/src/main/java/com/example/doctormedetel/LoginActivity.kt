@@ -10,34 +10,56 @@ import android.view.View.OnClickListener
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
+import com.example.doctormedetel.ResponceClass.LoginResponce
+import com.example.doctormedetel.RetrofitNetwork.Retroit
+import com.example.doctormedetel.repository.LoginRepository
+import com.example.doctormedetel.viewModel.UserViewModel
+import com.example.doctormedetel.viewModelFactory.LoginViewFactory
 
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var etuserNameet: EditText
     private lateinit var passwordet: EditText
     private lateinit var loginbtn: TextView
+    lateinit var  viewModel :UserViewModel
+
+    override fun onStart() {
+        super.onStart()
+       // viewModel.fetchUser()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         bindViews()
-        val loginListener = Listener(this)
-        //  loginbtn.setOnClickListener(loginListener)
+
         val loginTextWatcher = LoginTextWatcher(etuserNameet, passwordet, loginbtn, this)
         etuserNameet.addTextChangedListener(loginTextWatcher)
 
-    }      
+        val loginRepository = LoginRepository(Retroit.apiService,this)
+        val loginFactory = LoginViewFactory(loginRepository)
+        viewModel = ViewModelProvider(this,loginFactory)[UserViewModel ::class.java]
+        val loginListener = Listener(this,viewModel)
+        loginbtn.setOnClickListener(loginListener)
+    }
+
+    private fun renderLoginUI(data: LoginResponce?) {
+
+    }
+
     private fun bindViews() {
         etuserNameet = findViewById(R.id.usernameEt)
         passwordet = findViewById(R.id.passwordET)
         loginbtn = findViewById(R.id.loginBtn)
     }
 }
-class Listener(private val activity: LoginActivity) : OnClickListener {
+class Listener(private val activity: LoginActivity,private val viewModel: UserViewModel) : OnClickListener {
     override fun onClick(v: View?) {
         if (v != null) {
             if (v.id == R.id.loginBtn) {
                 Toast.makeText(activity, "Your message here", Toast.LENGTH_SHORT).show()
+                viewModel.accessRepo()
             }
         }
     }
