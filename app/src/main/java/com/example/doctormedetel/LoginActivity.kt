@@ -19,8 +19,8 @@ import com.example.doctormedetel.viewModelFactory.LoginViewFactory
 
 
 class LoginActivity : AppCompatActivity() {
-    private lateinit var etuserNameet: EditText
-    private lateinit var passwordet: EditText
+    private lateinit var etUsername: EditText
+    private lateinit var etpassword: EditText
     private lateinit var loginbtn: TextView
     lateinit var  viewModel :UserViewModel
 
@@ -34,13 +34,13 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         bindViews()
 
-        val loginTextWatcher = LoginTextWatcher(etuserNameet, passwordet, loginbtn, this)
-        etuserNameet.addTextChangedListener(loginTextWatcher)
+        val loginTextWatcher = LoginTextWatcher(etUsername, etpassword, loginbtn, this)
+        etUsername.addTextChangedListener(loginTextWatcher)
 
         val loginRepository = LoginRepository(Retroit.apiService,this)
         val loginFactory = LoginViewFactory(loginRepository)
         viewModel = ViewModelProvider(this,loginFactory)[UserViewModel ::class.java]
-        val loginListener = Listener(this,viewModel)
+        val loginListener = Listener(this,viewModel,etUsername,etpassword)
         loginbtn.setOnClickListener(loginListener)
     }
 
@@ -49,17 +49,25 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun bindViews() {
-        etuserNameet = findViewById(R.id.usernameEt)
-        passwordet = findViewById(R.id.passwordET)
+        etUsername = findViewById(R.id.usernameEt)
+        etpassword = findViewById(R.id.passwordET)
         loginbtn = findViewById(R.id.loginBtn)
     }
 }
-class Listener(private val activity: LoginActivity,private val viewModel: UserViewModel) : OnClickListener {
+class Listener(
+    private val activity: LoginActivity,
+    private val viewModel: UserViewModel,
+    val etUsername: EditText,
+    val etpassword: EditText
+) : OnClickListener {
     override fun onClick(v: View?) {
         if (v != null) {
             if (v.id == R.id.loginBtn) {
-                Toast.makeText(activity, "Your message here", Toast.LENGTH_SHORT).show()
-                viewModel.accessRepo()
+               val user =  etUsername.text.toString()
+                val password = etpassword.text.toString()
+                println("totext ${user}")
+                    // Toast.makeText(activity, etUsername, Toast.LENGTH_SHORT).show()
+                viewModel.accessRepo(user,password)
             }
         }
     }

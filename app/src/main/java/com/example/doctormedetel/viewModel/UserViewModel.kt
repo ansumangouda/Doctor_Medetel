@@ -6,7 +6,7 @@ import com.example.doctormedetel.repository.LoginRepository
 
 
 class UserViewModel(private val repository: LoginRepository) : ViewModel() {
-    fun accessRepo(){
-        repository.getUserDetails()
+    fun accessRepo(user: String, password: String) {
+        repository.getUserDetails(user,password)
     }
 }

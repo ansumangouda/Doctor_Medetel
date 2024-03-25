@@ -17,19 +17,23 @@ class LoginRepository(private val apiService: ApiService, private val loginActiv
     val user : LiveData<LoginResponce>get() = loginData
 
 
-    fun getUserDetails(){
+    fun getUserDetails(user: String, password: String) {
         val call = apiService.login()
         call.enqueue(object :Callback<LoginResponce>{
             override fun onResponse(call: Call<LoginResponce>, response: Response<LoginResponce>) {
                 if (response.isSuccessful){
                     loginData.value = response.body()
                    Toast.makeText(loginActivity,"oooook",Toast.LENGTH_SHORT).show()
-
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    println("Res code: ${response.code()} with error body : $errorBody")
+                   // println("Res code: ${response.code()} with error body : ${response.errorBody().toString()}")
                 }
             }
 
             override fun onFailure(call: Call<LoginResponce>, t: Throwable) {
                 Toast.makeText(loginActivity,"Nooooo",Toast.LENGTH_SHORT).show()
+                println("exeptoin ${t.message}")
 
             }
 
