@@ -17,8 +17,15 @@ class LoginRepository(private val apiService: ApiService, private val loginActiv
     val user : LiveData<LoginResponce>get() = loginData
 
 
-    fun getUserDetails(user: String, password: String) {
-        val call = apiService.login()
+    fun getUserDetails(
+        user: String,
+        password: String,
+        clientId: String,
+        grantType: String,
+        clientSecret: String,
+        role: String
+    ) {
+        val call = apiService.login(user,password,clientId,grantType,clientSecret,role)
         call.enqueue(object :Callback<LoginResponce>{
             override fun onResponse(call: Call<LoginResponce>, response: Response<LoginResponce>) {
                 if (response.isSuccessful){
@@ -33,7 +40,7 @@ class LoginRepository(private val apiService: ApiService, private val loginActiv
 
             override fun onFailure(call: Call<LoginResponce>, t: Throwable) {
                 Toast.makeText(loginActivity,"Nooooo",Toast.LENGTH_SHORT).show()
-                println("exeptoin ${t.message}")
+                println("exemption ${t.message}")
 
             }
 

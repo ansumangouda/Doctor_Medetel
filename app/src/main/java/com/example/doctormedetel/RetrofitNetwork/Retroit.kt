@@ -15,7 +15,7 @@ object Retroit {
         .addInterceptor(httpClient)
         .build();
     private val retroitClient = Retrofit.Builder()
-                 .baseUrl("https://telemedicinepvtapi.esdinfra.com")
+                 .baseUrl("https://telmed.medetel.in/")
                  .addConverterFactory(GsonConverterFactory.create())
                  .client(okHttpClient)
                  .build()
