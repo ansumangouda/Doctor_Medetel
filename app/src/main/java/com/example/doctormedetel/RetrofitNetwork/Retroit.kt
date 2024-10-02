@@ -4,18 +4,18 @@ import com.example.doctormedetel.ApiService.ApiService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 
-
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object Retroit {
     private val httpClient = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+    private val BASE_URL = "https://telmed.medetel.in/"
 
     private val okHttpClient = OkHttpClient.Builder()
         .addInterceptor(httpClient)
         .build();
     private val retroitClient = Retrofit.Builder()
-                 .baseUrl("https://telmed.medetel.in/")
+                 .baseUrl(BASE_URL)
                  .addConverterFactory(GsonConverterFactory.create())
                  .client(okHttpClient)
                  .build()

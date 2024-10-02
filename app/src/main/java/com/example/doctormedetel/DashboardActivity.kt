@@ -33,8 +33,8 @@ class DashboardActivity : AppCompatActivity() {
 
     @SuppressLint("RestrictedApi", "CommitTransaction")
     private fun lodeFragment(fragment: Fragment, canAddBackStark : Boolean){
-        var fragmentManager:FragmentManager = supportFragmentManager
-        var fragmentTransition: FragmentTransaction = fragmentManager.beginTransaction()
+        val fragmentManager:FragmentManager = supportFragmentManager
+        val fragmentTransition: FragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransition.replace(R.id.fragmentContainer,fragment)
 
         if (canAddBackStark){

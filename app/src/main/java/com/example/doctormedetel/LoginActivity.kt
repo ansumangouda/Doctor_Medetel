@@ -54,7 +54,7 @@ class LoginActivity : AppCompatActivity() {
     }
     @SuppressLint("SetTextI18n")
     private fun setDummyData(){
-        etUsername.setText("6301712311")
+        etUsername.setText("6301339183")
         etpassword.setText("Admin@123")
     }
     private fun renderLoginUI(data: LoginResponce?) {
